@@ -7,7 +7,7 @@
 
 		{{ include ('partials/_datos_empleado.html.twig', { 'empleado': empleado }) }}
 
-		{% if app.user %}
+		{% if is_granted('ROLE_ADMIN') %}
 
 			<a href="{{ path('delete_empleado', {'id':empleado.id}) }}">Borrar</a>
 
