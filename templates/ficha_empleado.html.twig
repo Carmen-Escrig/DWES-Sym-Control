@@ -1,0 +1,25 @@
+{% extends "base.html.twig" %}
+{% block title %}Empleado
+{% endblock %}
+{% block body %}
+
+	{% if empleado %}
+
+		{{ include ('partials/_datos_empleado.html.twig', { 'empleado': empleado }) }}
+
+		{% if app.user %}
+
+			<a href="{{ path('delete_empleado', {'id':empleado.id}) }}">Borrar</a>
+
+		{% endif %}
+
+	{% else %}
+		<h3>Empleado no encontrado</h3>
+
+	{% endif %}
+
+    <a href="{{ path('app_menu') }}">Inicio</a>
+
+
+
+{% endblock %}

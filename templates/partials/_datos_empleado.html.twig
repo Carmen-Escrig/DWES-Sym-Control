@@ -1,0 +1,14 @@
+<img src="{{ asset('images/empleados/' ~ empleado.foto) }}" alt="Imagen">
+<ul>
+	<li>
+		<a href="{{ path('app_empleado', {'id':empleado.id}) }}"><strong>{{ empleado.id }}</strong></a>
+	</li>
+	<li>
+		<strong>{{ empleado.nombre }} {{ empleado.apellidos }}</strong>
+	</li>
+
+	<li>
+		<strong>Seccion</strong>: {{ empleado.seccion.nombre }}
+    </li>
+
+</ul>

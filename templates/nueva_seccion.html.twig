@@ -1,0 +1,12 @@
+{% extends "base.html.twig" %}
+{% block title %}Añadir seccion{% endblock %}
+{% block body %}
+
+<h1>Nueva Seccion</h1>
+<hr>
+{{ form(formulario) }}
+
+    <a href="{{ path('app_menu') }}">Inicio</a>
+
+
+{% endblock %}
