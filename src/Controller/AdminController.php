@@ -131,4 +131,50 @@ class AdminController extends AbstractController
             return new Response("Empleado no encontrado");
         }
     }
+
+    #[Route('/admin/empleado_edit/{id}', name: 'edit_empleado')]
+    public function editEmpleado(ManagerRegistry $doctrine, Request $request, SluggerInterface $slugger, $id): Response
+    {
+        $repositorio = $doctrine->getRepository(Empleado::class);
+        $empleado = $repositorio->find($id);
+
+        $formulario = $this->createForm(EmpleadoFormType::class, $empleado);
+
+        $formulario->handleRequest($request);
+
+        if ($formulario->isSubmitted() && $formulario->isValid()) {
+            $foto = $formulario->get('foto')->getData();
+            if ($foto) {
+                $originalFilename = pathinfo($foto->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$foto->guessExtension();
+
+                try {
+
+                    $foto->move(
+                        $this->getParameter('images_directory'), $newFilename
+                    );
+                    $filesystem = new Filesystem();
+        
+                } catch (FileException $e) {
+                    return new Response("Error" . $e->getMessage());
+                }
+                $empleado->setFoto($newFilename);
+            }
+            $empleado = $formulario->getData();
+            $entityManager = $doctrine->getManager();
+            $entityManager->persist($empleado);
+            try {
+                $entityManager->flush();
+                return $this->redirectToRoute('app_empleado', [
+                    "id" => $empleado->getId()
+                ]);
+            } catch (\Exception $e) {
+                return new Response("Error" . $e->getMessage());
+            }
+        }
+        return $this->render('nuevo_empleado.html.twig', array(
+            'formulario' => $formulario->createView()
+        ));
+    }
 }

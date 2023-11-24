@@ -10,6 +10,7 @@
 		{% if is_granted('ROLE_ADMIN') %}
 
 			<a href="{{ path('delete_empleado', {'id':empleado.id}) }}">Borrar</a>
+			<a href="{{ path('edit_empleado', {'id':empleado.id}) }}">Edit</a>
 
 		{% endif %}
 
